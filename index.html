@@ -80,6 +80,7 @@
         </div>
 
         <div id="fotoFilterTools" >
+
             <button title="gray" onclick="tools().filters().gray()" class="action">⚫</button>
             <button title="sepia" onclick="tools().filters().sepia()" class="action">🟡</button>
             <button title="hue-rotate" onclick="tools().filters().hueRotate()" class="action">
@@ -173,6 +174,7 @@ body{
     justify-content: center;
     align-items: center;
     overflow-x: auto;
+    flex-wrap: wrap;
 }
 img{
     width: 5vh;
@@ -673,6 +675,7 @@ upload.addEventListener('change',function(){
                 canvasContainer.height = img.height;
             }
             ctx.drawImage(img,0,0,canvas.width,canvas.height);
+            drawing = false;
     };
     }
 
