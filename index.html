@@ -31,7 +31,7 @@
             <label class="action" title="strike color" for="brushColor">
                 <img src="palette.png" alt="">
             </label>
-            <input type="color" style="display: none;" id="brushColor">
+            <input type="color" value="#ff5733" style="display: none;" id="brushColor">
 
             <button id="actions" title="tools" onclick="tools().pen()" class="action">
                 <img src="tools.png" alt="">
@@ -352,21 +352,24 @@ window.addEventListener('load',() => {
 })
 
 window.addEventListener('load',() => {
-    /*
-    canvasContainer.width = window.innerWidth;
-    canvasContainer.height = window.innerHeight *0.8;*/
-    
     
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight * 0.8;
 })
 
 window.addEventListener('resize',() => {
+    const img = new Image();
+    img.src = canvas.toDataURL();
+
+    img.onload = () => {
+        ctx.drawImage(img,0,0,canvas.width,canvas.height);
+    }
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight * 0.8;
 })
 
 document.getElementById('clearCanvas').addEventListener('click',() => {
+    drawing = true;
     ctx.clearRect(0,0,canvas.width,canvas.height)
     cutOffCanvas = undefined;
     localStorage.setItem('currentImg','')
@@ -385,8 +388,9 @@ function tools(){
         },
         isDrawing: (e) => {
             drawing = !drawing ;
-            if (pencilOnOf.src.includes('pencil.png')) {
+            if (drawing === false) {
                 pencilOnOf.src = 'pencil-off.png';
+                
             } else {
                 pencilOnOf.src = 'pencil.png';
             }
@@ -506,7 +510,7 @@ function tools(){
                 const img = new Image();
                 img.src = localStorage.getItem('currentImg');
                 img.onload = () => {
-                ctx.drawImage(img,0,0,canvas.width,canvas.height)
+                ctx.drawImage(img,0,0)
             }
         }
     },
@@ -567,10 +571,10 @@ canvas.addEventListener('mousemove',(e) => {
 })
 canvas.addEventListener('mouseup',(e) => {
     if (drawing) {
-    if (isLineStraight) {
+    if (isLineStraight && !fill) {
         ctx.lineTo(e.offsetX-canvas.getBoundingClientRect().left,e.offsetY-canvas.getBoundingClientRect().top);
         ctx.stroke();
-    }if (lineCap === 'round') {
+    }if (lineCap === 'round' && !fill) {
             ctx.beginPath();
             ctx.arc(e.offsetX,e.offsetY,lineWidth.value /2,0,Math.PI*2);
             ctx.fillStyle = brushColor.value;
@@ -583,10 +587,15 @@ canvas.addEventListener('mouseup',(e) => {
     draw = false;
     ctx.closePath()
 
-    if (undueCanvas.length > 6) {
+    if (undueCanvas.length > 10) {
         undueCanvas.splice(0,1);
     }
     undueCanvas.push(canvas.toDataURL())
+    if(fill){
+        ctx.strokeWidth
+        ctx.closePath()
+        ctx.stroke()
+    }
 }
 })
 
@@ -629,23 +638,26 @@ canvas.addEventListener('touchstart',(e) => {
 
     canvas.addEventListener('touchend',(e) => {
         if (isLineStraight) {
-           
             ctx.lineTo(e.changedTouches[0].clientX,e.changedTouches[0].clientY);
             ctx.stroke();
-        }else if (lineCap === 'round') {
+        }else if (lineCap === 'round' && !fill) {
             ctx.beginPath();
             ctx.arc(e.changedTouches[0].clientX,e.changedTouches[0].clientY,lineWidth.value /2,0,Math.PI*2);
             ctx.fillStyle = brushColor.value;
             ctx.fill();
             ctx.closePath();
-        }
+        }if(fill){
+        ctx.strokeWidth
+        ctx.closePath()
+        ctx.stroke()
+    }
         
         cordX = null;
         cordY = null;
         draw = false;
         ctx.closePath()
 
-        if (undueCanvas.length > 6) {
+        if (undueCanvas.length > 10) {
             undueCanvas.splice(0,1);
         }
         undueCanvas.push(canvas.toDataURL())
@@ -674,6 +686,7 @@ upload.addEventListener('change',function(){
                 canvasContainer.width = img.width;
                 canvasContainer.height = img.height;
             }
+            ctx.clearRect(0,0,canvas.width,canvas.height)
             ctx.drawImage(img,0,0,canvas.width,canvas.height);
             drawing = false;
     };
