@@ -695,7 +695,37 @@ upload.addEventListener('change',function(){
     
     reader.readAsDataURL(file)
 })
+    
+// new 
+let touchStart = [];
 
+document.addEventListener('touchstart', (e) => {
+  if (e.touches.length === 2) {
+    touchStart = [
+      { x: e.touches[0].clientX, y: e.touches[0].clientY },
+      { x: e.touches[1].clientX, y: e.touches[1].clientY }
+    ];
+  }
+});
+
+document.addEventListener('touchmove', (e) => {
+  if (e.touches.length === 2) {
+    const touchEnd = [
+      { x: e.touches[0].clientX, y: e.touches[0].clientY },
+      { x: e.touches[1].clientX, y: e.touches[1].clientY }
+    ];
+
+    // Вычисляем изменение в движении
+    const deltaX = (touchEnd[0].x + touchEnd[1].x) - (touchStart[0].x + touchStart[1].x);
+    const deltaY = (touchEnd[0].y + touchEnd[1].y) - (touchStart[0].y + touchStart[1].y);
+
+    // Смещаем элемент (например, страницу или контейнер)
+    window.scrollBy(-deltaX / 2, -deltaY / 2);  // можно настроить чувствительность
+
+    // Обновляем начальные координаты для следующего движения
+    touchStart = touchEnd;
+  }
+});
 
 </script>
 
