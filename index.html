@@ -696,58 +696,7 @@ upload.addEventListener('change',function(){
     reader.readAsDataURL(file)
 })
 
-//new
-let img;
-let startDistance = 0;
-let scale = 1; 
-
-function getDistance(touch1,touch2){
-  let dx = touch1.clientX - touch2.clientX;
-  let dy = touch1.clientY - touch2.clientY;
-  startDistance = Math.sqrt(dx*dx + dy*dy);
-}
-
-canvas.addEventListener("touchstart", (e) => {
-  if (e.touches.length === 2) { 
-    img = new Image();
-    img.src = canvas.toDataURL();
-
-    
-    img.onload = () => {  // Ждём, пока картинка загрузится
-      startDistance = getDistance(e.touches[0], e.touches[1]);  // Запоминаем начальное расстояние
-    };
-  }
-  e.preventDefault();
-});
-
-canvas.addEventListener("touchmove", (e) => {
-  if (e.touches.length === 2) {  // Два пальца
-    const currentDistance = getDistance(e.touches[0], e.touches[1]); 
-
-    if (startDistance !== 0) { 
-      const scaleFactor = currentDistance / startDistance;  
-      scale *= scaleFactor;  
-      startDistance = currentDistance;
-    }
-   
-    drawCanvas(); 
-  }
-  e.preventDefault();
-});
-
-function drawCanvas() {
-  if (!img) return;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);  
-  ctx.save();
-  ctx.scale(scale, scale);  
-
-  const scaledWidth = img.width * scale;
-  const scaledHeight = img.height * scale;
-
-  ctx.drawImage(img,0,0,scaledWidth,scaledHeight);
-
-  ctx.restore(); 
-}
+  
 
 </script>
 
