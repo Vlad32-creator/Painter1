@@ -334,7 +334,16 @@ let imageHeight;
 let imgSrc;
 let cutOffCanvas;
 
-
+fotoFilterTools.addEventListener('click',(e) => {
+    e.preventDefault()
+})
+action.addEventListener('click',(e) => {
+    e.preventDefault()
+})
+sidebar.addEventListener('click',(e) => {
+    e.preventDefault()
+})
+    
 //Save data of canvas
 setInterval(() => {
     const data = canvas.toDataURL();
