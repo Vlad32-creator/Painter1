@@ -486,31 +486,55 @@ function tools(){
                     ctx.filter = 'sepia(100%)';
                     ctx.drawImage(canvas,0,0)
                     ctx.filter = 'none';
+                    undueCanvas.push(canvas.toDataURL());
+                    if(undueCanvas.length === 15) {
+                        undueCanvas.splice(0,1);
+                    }
                 },
                 blur: ()=>{
                     ctx.filter = 'blur(300px)';
                     ctx.drawImage(canvas,0,0)
                     ctx.filter = 'none';
+                    undueCanvas.push(canvas.toDataURL());
+                    if(undueCanvas.length === 15) {
+                        undueCanvas.splice(0,1);
+                    }
                 },
                 hueRotate:()=>{
                     ctx.filter = 'hue-rotate(10deg)';
                     ctx.drawImage(canvas,0,0);
                     ctx.filter = 'none'
+                    undueCanvas.push(canvas.toDataURL());
+                    if(undueCanvas.length === 15) {
+                        undueCanvas.splice(0,1);
+                    }
                 },
                 gray: ()=>{
                     ctx.filter = 'grayscale(100%)';
                     ctx.drawImage(canvas,0,0);
                     ctx.filter = 'none';
+                    undueCanvas.push(canvas.toDataURL());
+                    if(undueCanvas.length === 15) {
+                        undueCanvas.splice(0,1);
+                    }
                 },
                 saturate: ()=>{
                     ctx.filter = 'saturate(200%)';
                     ctx.drawImage(canvas,0,0);
                     ctx.filter = 'none'
+                    undueCanvas.push(canvas.toDataURL());
+                    if(undueCanvas.length === 15) {
+                        undueCanvas.splice(0,1);
+                    }
                 },
                 contrast:()=>{
                     ctx.filter = 'contrast(110%)';
                     ctx.drawImage(canvas,0,0);
                     ctx.filter = 'none'
+                    undueCanvas.push(canvas.toDataURL());
+                    if(undueCanvas.length === 15) {
+                        undueCanvas.splice(0,1);
+                    }
                 },
             }
         },
