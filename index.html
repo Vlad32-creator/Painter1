@@ -22,7 +22,7 @@
             </div>
 
             <label for="input" title="load photo" class="action">
-                <img src="paperclip.png" alt="">
+                <img src="paperclip.png" alt="load photo">
             </label>
             <input type="file"  style="display: none; transform: translate(0,-20vh);" id="input">
             <button class="action" onclick="tools().openDownload()"  title="download">
@@ -49,6 +49,20 @@
             <input style="display: none;" type="color" id="colorFill">
         </div>
 
+        <div id="brushes">
+            <div onclick="tools().brushesTools().marker(event)" class="action">marker</div>
+            <div onclick="tools().brushesTools().lighter(event)" class="action">lighter</div>
+            <div onclick="tools().brushesTools().darken(event)">darken</div>
+            <div onclick="tools().brushesTools().difference(event)" class="action">difference</div>
+            <div onclick="tools().brushesTools().exclusion(event)" class="action">exclusion</div>
+            <div onclick="tools().brushesTools().hardLight(event)" class="action">hard-light</div>
+            <div onclick="tools().brushesTools().softLight(event)" class="action">soft-light</div>
+            <div onclick="tools().brushesTools().multiply(event)" class="action">multiply</div>
+            <div onclick="tools().brushesTools().screen(event)" class="action">screen</div>
+            <div onclick="tools().brushesTools().overlay(event)" class="action">overlay</div>
+            <button class="action" onclick="tools().exit()">&#10006;</button>
+        </div>
+
         <div id="action">
             <button class="action" title="скругление" id="lineRound" onclick="tools().lineCapRound(event)">⚪</button>
             <button class="action" id='drawChanger' onclick="tools().isDrawing()">
@@ -66,7 +80,9 @@
             <button class="action" onclick="tools().elusion(event)">
                 <img src="reys.png" alt="">
             </button>
-
+            <button class="action" onclick="tools().brushes()">
+                <img src="brushes.png" alt="">
+            </button>
             <button class="action" onclick="tools().back()">
                 <img src="back.png" alt="">
             </button>
@@ -106,9 +122,9 @@
         </div>
 
         <div id="castomFilter">
-            <input type="range" id="redRange" min="1" max="255">
-            <input type="range" id="greenRange" min="1" max="255">
-            <input type="range" id="blueRange" min="1" max="255">
+            <input type="range" class="ranges" value="0" id="redRange" min="1" max="255">
+            <input type="range" class="ranges" value="0" id="greenRange" min="1" max="255">
+            <input type="range" class="ranges" value="0" id="blueRange" min="1" max="255">
             <button class="action" id="exitRenge" onclick="tools().exit()">&#10006;</button>
         </div>
 
@@ -149,9 +165,9 @@ body{
 }
 #canvas-container{
     flex: 8;
+    border-bottom: 1px solid;
     overflow: auto;
     position: relative;
-    border-bottom: 1px solid;
 }
 #canvas{
     flex: 8;
@@ -159,6 +175,13 @@ body{
     flex-shrink: 0;
     touch-action: none;
     overflow: auto;
+}
+#brushes{
+    display: none;
+    flex: 2;
+    justify-content: space-around;
+    align-items: center;
+    overflow-x: auto;
 }
 #sidebar{
     flex: 2;
@@ -214,6 +237,7 @@ img{
     justify-content: center;
     align-items: center;
 }
+
 /*inputs range*/
 #redRange {
     -webkit-appearance: none;
@@ -298,10 +322,14 @@ img{
 </style>
 
 <script>
-const canvasContainer = document.getElementById('canvas-container');
+const brushes = document.getElementById('brushes');
+
+const ranges = document.querySelector('.ranges');
 const redRange = document.getElementById('redRange');
 const greenRange = document.getElementById('greenRange');
 const blueRange = document.getElementById('blueRange');
+
+const canvasContainer = document.getElementById('canvas-container');
 const castomFilter = document.getElementById('castomFilter');
 const dawnloadCanvas = document.getElementById('dawnloadCanvas');
 const fotoFilterTools = document.getElementById('fotoFilterTools')
@@ -315,7 +343,7 @@ const brushColor = document.getElementById('brushColor');
 const upload = document.getElementById('input');
 const canvas = document.getElementById('canvas');
 const lineRound = document.getElementById('lineRound');
-const ctx = canvas.getContext('2d');
+const ctx = canvas.getContext('2d',{ willReadFrequently: true });
 
 let fill = false;
 let draw = false;
@@ -335,15 +363,16 @@ let imageWidth;
 let imageHeight;
 let imgSrc;
 let cutOffCanvas;
+let alpha = 1;
 
-
-action.addEventListener('click',(e) => {
-    e.preventDefault()
-})
 fotoFilterTools.addEventListener('click',(e) => {
     e.preventDefault()
 })
-    
+action.addEventListener('click',(e) => {
+    e.preventDefault()
+})
+
+
 //Save data of canvas
 setInterval(() => {
     const data = canvas.toDataURL();
@@ -437,11 +466,16 @@ function tools(){
         unpen: (e) => {
             e.target.style.background = e.target.style.background === 'green'? 'transparent':'green';
         },
+        brushes: () => {
+            action.style.display = 'none';
+            brushes.style.display = 'flex';
+        },
         exit: () => {
             action.style.display = 'none';
             sidebar.style.display = 'flex';
             fotoFilterTools.style.display = 'none';
             castomFilter.style.display = 'none'
+            brushes.style.display = 'none';
         },
         download: function(format){
             if (cutOffCanvas === undefined) {
@@ -475,6 +509,7 @@ function tools(){
                 ctx.clearRect(0,0,canvas.width,canvas.height)
                 ctx.drawImage(img,0,0,canvas.width,canvas.height);
             }
+            
         },
         filterBar: () => {
             action.style.display = 'none';
@@ -565,6 +600,102 @@ function tools(){
         }
         cutOffCanvas = newCanvas;
     },
+    brushesTools: () => {
+        return{
+            marker:(e) => {
+                if (alpha === 0.1) {
+                    alpha = 1;
+                    e.target.style.background = 'transparent'
+                }else{
+                    alpha = 0.1;
+                    e.target.style.background = 'green'
+                }
+            },
+            lighter: (e) => {
+                if (isEraser === 'lighter') {
+                    isEraser = 'source-over'
+                    e.target.style.background = 'transparent'
+                }else{
+                    isEraser = 'lighter';
+                    e.target.style.background = 'green'
+                }
+            },
+            darken: (e) => {
+                if (isEraser === 'darken') {
+                    isEraser = 'source-over'
+                    tools().unpen(e);
+                }else{
+                    isEraser = 'darken'
+                    tools().unpen(e);
+                }
+            },
+            difference: (e) => {
+                if (isEraser === 'difference') {
+                    isEraser = 'source-over'
+                    tools().unpen(e);
+                }else{
+                    isEraser = 'difference';
+                    tools().unpen(e);
+                }
+            },
+            exclusion: (e) => {
+                if (isEraser === 'exclusion') {
+                    isEraser = 'source-over'
+                    tools().unpen(e);
+                }else{
+                    isEraser = 'exclusion'
+                    tools().unpen(e);
+                }
+            },
+            hardLight: (e) => {
+                if (isEraser === 'hard-light') {
+                    isEraser = 'source-over';
+                    tools().unpen(e);
+                }else{
+                    isEraser = 'hard-light'
+                    tools().unpen(e);
+                }
+            },
+            softLight: (e) => {
+                if (isEraser === 'soft-light') {
+                    isEraser = 'source-over';
+                    tools().unpen(e);
+                }else{
+                    isEraser = 'soft-light'
+                    tools().unpen(e);
+                }
+            },
+            multiply: (e) => {
+                if (isEraser === 'multiply') {
+                    isEraser = 'source-over';
+                    tools().unpen(e);
+                }else{
+                    isEraser = 'multiply'
+                    tools().unpen(e);
+                }
+            },
+            screen: (e) => {
+                if (isEraser === 'screen') {
+                    isEraser = 'source-over';
+                    tools().unpen(e);
+                }else{
+                    isEraser = 'screen'
+                    tools().unpen(e);
+                }
+            },
+            overlay: (e) => {
+                if (isEraser === 'overlay') {
+                    isEraser = 'source-over';
+                    tools().unpen(e);
+                }else{
+                    isEraser = 'overlay'
+                    tools().unpen(e);
+                }
+            }, 
+
+        }
+    },
+    
 }
 }
 
@@ -587,6 +718,7 @@ canvas.addEventListener('mouseout',() => {
 })
 canvas.addEventListener('mousemove',(e) => {
     if (draw) {
+        ctx.globalAlpha = alpha;
         const rect = canvas.getBoundingClientRect();
         ctx.globalCompositeOperation = isEraser;
         isElusion && ctx.moveTo(cordX,cordY);
@@ -624,6 +756,8 @@ canvas.addEventListener('mouseup',(e) => {
         undueCanvas.splice(0,1);
     }
     undueCanvas.push(canvas.toDataURL())
+
+    
     if(fill){
         ctx.strokeWidth
         ctx.closePath()
@@ -649,7 +783,7 @@ canvas.addEventListener('touchstart',(e) => {
     })
 
     canvas.addEventListener('touchmove',(e) => {
-      if (draw) {
+      if ( e.touches.length === 1 && draw) {
         e.preventDefault();
         const touch = e.touches[0]
         ctx.globalCompositeOperation = isEraser;
@@ -680,10 +814,10 @@ canvas.addEventListener('touchstart',(e) => {
             ctx.fill();
             ctx.closePath();
         }if(fill){
-        ctx.strokeWidth
-        ctx.closePath()
-        ctx.stroke()
-    }
+            ctx.strokeWidth
+            ctx.closePath()
+            ctx.stroke()
+        }
         
         cordX = null;
         cordY = null;
@@ -711,8 +845,8 @@ upload.addEventListener('change',function(){
             if (img.width > 3000 || img.height > 3000) {
                 canvas.width = img.width/2;
                 canvas.height = img.height/2;
-                canvasContainer.width = img.width/2;
-                canvasContainer.height = img.height/2;
+                canvasContainer.style.width = img.width/2;
+                canvasContainer.style.height = img.height/2;
             }else{
                 canvas.width = img.width;
                 canvas.height = img.height;
@@ -722,6 +856,7 @@ upload.addEventListener('change',function(){
             ctx.clearRect(0,0,canvas.width,canvas.height)
             ctx.drawImage(img,0,0,canvas.width,canvas.height);
             drawing = false;
+            
     };
     }
 
@@ -729,8 +864,9 @@ upload.addEventListener('change',function(){
     reader.readAsDataURL(file)
 })
 
-  
-//SCROLE
+//new 
+
+
 let startX, startY, scrollLeft, scrollTop;
 
 canvasContainer.addEventListener("touchstart", (e) => {
@@ -739,27 +875,30 @@ canvasContainer.addEventListener("touchstart", (e) => {
   startY = e.touches[0].clientY;
   scrollLeft = canvasContainer.scrollLeft;
   scrollTop = canvasContainer.scrollTop;
-  e.preventDefault()  
+  e.preventDefault()
+  
 });
 
 canvasContainer.addEventListener("touchmove", (e) => {
   if (drawing) return;
-  if(!drawing){
-      const x = e.touches[0].clientX;
-      const y = e.touches[0].clientY;
-      
-      const walkX = startX - x;
-      const walkY = startY - y; 
+  if (!drawing) {
+    const x = e.touches[0].clientX;
+  const y = e.touches[0].clientY;
   
-      canvasContainer.scrollLeft = scrollLeft + walkX;
-      canvasContainer.scrollTop = scrollTop + walkY;
+  const walkX = startX - x;
+  const walkY = startY - y; 
+  
+  canvasContainer.scrollLeft = scrollLeft + walkX;
+  canvasContainer.scrollTop = scrollTop + walkY;
   }
+  
 });
 
 canvasContainer.addEventListener("touchend", () => {
   isDragging = false;
 });
-    
+
+
 </script>
 
 </body>
