@@ -728,7 +728,34 @@ upload.addEventListener('change',function(){
     reader.readAsDataURL(file)
 })
 
+  //new 
+let startX, startY, scrollLeft, scrollTop;
+
+canvasContainer.addEventListener("touchstart", (e) => {
+  isDragging = true;
+  startX = e.touches[0].clientX;
+  startY = e.touches[0].clientY;
+  scrollLeft = canvasContainer.scrollLeft;
+  scrollTop = canvasContainer.scrollTop;
+  e.preventDefault()
+});
+
+canvasContainer.addEventListener("touchmove", (e) => {
+  if (!drawing) return;
   
+  const x = e.touches[0].clientX;
+  const y = e.touches[0].clientY;
+  
+  const walkX = startX - x; // Разница по X
+  const walkY = startY - y; // Разница по Y
+  
+  canvasContainer.scrollLeft = scrollLeft + walkX;
+  canvasContainer.scrollTop = scrollTop + walkY;
+});
+
+canvasContainer.addEventListener("touchend", () => {
+  isDragging = false;
+});
 
 </script>
 
