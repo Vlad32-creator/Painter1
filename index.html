@@ -744,15 +744,16 @@ canvasContainer.addEventListener("touchstart", (e) => {
 
 canvasContainer.addEventListener("touchmove", (e) => {
   if (drawing) return;
+  if(!drawing){
+      const x = e.touches[0].clientX;
+      const y = e.touches[0].clientY;
+      
+      const walkX = startX - x;
+      const walkY = startY - y; 
   
-  const x = e.touches[0].clientX;
-  const y = e.touches[0].clientY;
-  
-  const walkX = startX - x;
-  const walkY = startY - y; 
-  
-  canvasContainer.scrollLeft = scrollLeft + walkX;
-  canvasContainer.scrollTop = scrollTop + walkY;
+      canvasContainer.scrollLeft = scrollLeft + walkX;
+      canvasContainer.scrollTop = scrollTop + walkY;
+  }
 });
 
 canvasContainer.addEventListener("touchend", () => {
