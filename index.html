@@ -114,18 +114,10 @@
             <button title="original foto" onclick="tools().original()" class="action">
                 <img src="maitFoto.png" alt="">
             </button>
-            <button title="castom effect" onclick="tools().castomFilter()">castom</button>
             <button class="action">
                 <img src="adeptCanvas.png" alt="">
             </button>
             <button class="action" onclick="tools().exit()">&#10006;</button>
-        </div>
-
-        <div id="castomFilter">
-            <input type="range" class="ranges" value="0" id="redRange" min="1" max="255">
-            <input type="range" class="ranges" value="0" id="greenRange" min="1" max="255">
-            <input type="range" class="ranges" value="0" id="blueRange" min="1" max="255">
-            <button class="action" id="exitRenge" onclick="tools().exit()">&#10006;</button>
         </div>
 
     </div>
@@ -231,104 +223,10 @@ img{
 #scrinIcon{
     background-color: transparent;
 }
-#castomFilter{
-    flex: 2;
-    display: none;
-    justify-content: center;
-    align-items: center;
-}
-
-/*inputs range*/
-#redRange {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 30vw;
-    height: 2vh;
-    background: red;
-    border-radius: 2vh;
-    outline: none;
-}
-#redRange::-webkit-slider-runnable-track{
-    width: 30vw;
-    height: 2vh;
-    background-color: red;
-    border-radius: 5vh;
-}
-#redRange::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 4vh;
-    height: 4vh;
-    background: red;
-    border-radius: 50%;
-    cursor: pointer;
-    margin-top: -7px; 
-}
-#greenRange {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 30vw;
-    height: 7px;
-    background: green;
-    border-radius: 3px;
-    outline: none;
-}
-#greenRange::-webkit-slider-runnable-track{
-    width: 30vw;
-    height: 2vh;
-    background-color: green;
-    border-radius: 20px;
-}
-#greenRange::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 4vh;
-    height: 4vh;
-    background: green;
-    border-radius: 50%;
-    cursor: pointer;
-    margin-top: -7px; 
-}
-#blueRange {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 30vw;
-    height: 7px;
-    background:blue;
-    border-radius: 3px;
-    outline: none;
-}
-#blueRange::-webkit-slider-runnable-track{
-    width: 30vw;
-    height: 2vh;
-    background-color: blue;
-    border-radius: 20px;
-}
-#blueRange::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 4vh;
-    height: 4vh;
-    background: blue;
-    border-radius: 50%;
-    cursor: pointer;
-    margin-top: -7px; 
-}
-#exitRange{
-    position: absolute;
-    top: 0;
-    right: 0;
-}
 </style>
 
 <script>
 const brushes = document.getElementById('brushes');
-
-const ranges = document.querySelector('.ranges');
-const redRange = document.getElementById('redRange');
-const greenRange = document.getElementById('greenRange');
-const blueRange = document.getElementById('blueRange');
-
 const canvasContainer = document.getElementById('canvas-container');
 const castomFilter = document.getElementById('castomFilter');
 const dawnloadCanvas = document.getElementById('dawnloadCanvas');
@@ -393,14 +291,6 @@ window.addEventListener('load',() => {
     
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight * 0.8;
-    sidebar.width = window.innerWidth;
-    sidebar.height = window.innerHeight * 0.2;
-    fotoFilterTools.width = window.innerWidth;
-    fotoFilterTools.height = window.innerHeight * 0.2;
-    action.width = window.innerWith;
-    action.height = window.innerHeight * 0.2;
-    brushes.width = window.innerWidth;
-    brushes.height = window.innerHeight * 0.2;
 })
 
 window.addEventListener('resize',() => {
@@ -412,14 +302,6 @@ window.addEventListener('resize',() => {
     }
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight * 0.8;
-    sidebar.width = window.innerWidth;
-    sidebar.height = window.innerHeight * 0.2;
-    fotoFilterTools.width = window.innerWidth;
-    fotoFilterTools.height = window.innerHeight * 0.2;
-    action.width = window.innerWith;
-    action.height = window.innerHeight * 0.2;
-    brushes.width = window.innerWidth;
-    brushes.height = window.innerHeight * 0.2;
 })
 
 document.getElementById('clearCanvas').addEventListener('click',() => {
@@ -597,10 +479,6 @@ function tools(){
                 ctx.drawImage(img,0,0)
             }
         }
-    },
-    castomFilter: () => {
-        fotoFilterTools.style.display = 'none';
-        castomFilter.style.display = 'flex';
     },
     cutCanvas: () => {
         const newCanvas = document.createElement('canvas');
