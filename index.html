@@ -111,12 +111,6 @@
             <button title="blur" onclick="tools().filters().blur()" class="action">
                 <img src="blur.png" alt="">
             </button>
-            <button title="original foto" onclick="tools().original()" class="action">
-                <img src="maitFoto.png" alt="">
-            </button>
-            <button class="action">
-                <img src="adeptCanvas.png" alt="">
-            </button>
             <button class="action" onclick="tools().exit()">&#10006;</button>
         </div>
 
@@ -260,7 +254,6 @@ let imgStartPointHeight;
 let imageWidth;
 let imageHeight;
 let imgSrc;
-let cutOffCanvas;
 let alpha = 1;
 
 fotoFilterTools.addEventListener('click',(e) => {
@@ -376,21 +369,11 @@ function tools(){
             brushes.style.display = 'none';
         },
         download: function(format){
-            if (cutOffCanvas === undefined) {
                 const imageURL = canvas.toDataURL(`image/${format}`);
                 const link = document.createElement('a');
                 link.href = imageURL;
                 link.download = `my-drawing.${format}`
                 link.click();
-                console.log(cutOffCanvas);
-            }else{
-                const imageURL = cutOffCanvas.toDataURL(`image/${format}`)
-                const link = document.createElement('a');
-                link.href = imageURL;
-                link.download = `my-drawing.${format}`
-                link.click();
-            }
-            
         },
         openDownload: () => {
             if (dawnloadCanvas.style.display === 'none') {
@@ -471,29 +454,6 @@ function tools(){
                 },
             }
         },
-        original: () => {
-            if (localStorage.getItem('currentImg') !== null) {
-                const img = new Image();
-                img.src = localStorage.getItem('currentImg');
-                img.onload = () => {
-                ctx.drawImage(img,0,0)
-            }
-        }
-    },
-    cutCanvas: () => {
-        const newCanvas = document.createElement('canvas');
-        const ctx = newCanvas.getContext('2d');
-
-        newCanvas.width = imageWidth;
-        newCanvas.height = imageHeight;
-
-        const img = new Image();
-        img.src = imgSrc;
-        img.onload = () => {
-            ctx.drawImage(img,0,0,newCanvas.width,newCanvas.height);
-        }
-        cutOffCanvas = newCanvas;
-    },
     brushesTools: () => {
         return{
             marker:(e) => {
