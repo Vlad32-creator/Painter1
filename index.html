@@ -51,6 +51,7 @@
 
         <div id="brushes">
             <div onclick="tools().brushesTools().marker(event)" class="action">marker</div>
+            <div onclick="tools().brushesTools().rainbow(event)" class="action">rainbow</div>
             <div onclick="tools().brushesTools().lighter(event)" class="action">lighter</div>
             <div onclick="tools().brushesTools().darken(event)">darken</div>
             <div onclick="tools().brushesTools().difference(event)" class="action">difference</div>
@@ -255,6 +256,9 @@ let imageWidth;
 let imageHeight;
 let imgSrc;
 let alpha = 1;
+
+let rainbow = false;
+let color = Math.floor(Math.random()*360);
 
 fotoFilterTools.addEventListener('click',(e) => {
     e.preventDefault()
@@ -464,6 +468,15 @@ function tools(){
                     e.target.style.background = 'green'
                 }
             },
+            rainbow: (e) => {
+                if (!rainbow) {
+                    rainbow = true;
+                    e.target.style.background = 'green'
+                }else{
+                    rainbow = false;
+                    e.target.style.background = 'transparent'
+                }
+            },
             lighter: (e) => {
                 if (isEraser === 'lighter') {
                     isEraser = 'source-over'
@@ -570,20 +583,36 @@ canvas.addEventListener('mouseout',() => {
     draw = false;
 })
 canvas.addEventListener('mousemove',(e) => {
-    if (draw) {
-        ctx.globalAlpha = alpha;
-        const rect = canvas.getBoundingClientRect();
-        ctx.globalCompositeOperation = isEraser;
-        isElusion && ctx.moveTo(cordX,cordY);
-        ctx.strokeStyle = brushColor.value;
-        ctx.lineWidth = lineWidth.value;
-        if (!isLineStraight) {
-            ctx.lineTo(e.offsetX - rect.left,e.offsetY - rect.top);
+   if (draw) {
+        if (rainbow) {
+            color += 30;
+            ctx.globalAlpha = alpha;
+            isElusion && ctx.moveTo(cordX,cordY);
+            ctx.lineWidth = lineWidth.value;
+            ctx.strokeStyle = `hsl(${color},100%,50%)`;
+            ctx.beginPath();
+            ctx.moveTo(cordX,cordY);
+            ctx.lineTo(e.offsetX,e.offsetY);
             ctx.stroke();
-        }
-        if (fill) {
-            ctx.fillStyle = colorFill.value;
-            ctx.fill();
+            if (color === 360) color = 0;
+
+            cordX = e.offsetX;
+            cordY = e.offsetY;
+        }else{
+            ctx.globalAlpha = alpha;
+            const rect = canvas.getBoundingClientRect();
+            ctx.globalCompositeOperation = isEraser;
+            isElusion && ctx.moveTo(cordX,cordY);
+            ctx.strokeStyle = brushColor.value;
+            ctx.lineWidth = lineWidth.value;
+            if (!isLineStraight) {
+                ctx.lineTo(e.offsetX - rect.left,e.offsetY - rect.top);
+                ctx.stroke();
+            }
+            if (fill) {
+                ctx.fillStyle = colorFill.value;
+                ctx.fill();
+            }
         }
     }
 })
