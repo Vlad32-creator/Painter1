@@ -665,25 +665,40 @@ canvas.addEventListener('touchstart',(e) => {
     })
 
     canvas.addEventListener('touchmove',(e) => {
-      if ( e.touches.length === 1 && draw) {
-        e.preventDefault();
+     if ( e.touches.length === 1 && draw) {
         const touch = e.touches[0];
-        ctx.globalAlpha = alpha;
-        ctx.globalCompositeOperation = isEraser;
-        isElusion && ctx.moveTo(cordX,cordY);
-        ctx.strokeStyle = brushColor.value;
-        ctx.lineWidth = lineWidth.value;
-
-        if (!isLineStraight) {
+        if (rainbow) {
+            color += 30;
+            ctx.globalAlpha = alpha;
+            isElusion && ctx.moveTo(cordX,cordY);
+            ctx.lineWidth = lineWidth.value;
+            ctx.strokeStyle = `hsl(${color},100%,50%)`;
+            ctx.beginPath();
+            ctx.moveTo(cordX,cordY);
             ctx.lineTo(touch.clientX,touch.clientY);
             ctx.stroke();
+            if (color === 360) color = 0;
+
+            cordX = touch.clientX;
+            cordY = touch.clientY;
+        }else{
+            e.preventDefault();
+            
+            ctx.globalAlpha = alpha;
+            ctx.globalCompositeOperation = isEraser;
+            isElusion && ctx.moveTo(cordX,cordY);
+            ctx.strokeStyle = brushColor.value;
+            ctx.lineWidth = lineWidth.value;
+            if (!isLineStraight) {
+                ctx.lineTo(touch.clientX,touch.clientY);
+                ctx.stroke();
+            }
+            if (fill) {
+                ctx.fillStyle = colorFill.value;
+                ctx.fill();
+            }
         }
-        if (fill) {
-            ctx.fillStyle = colorFill.value;
-            ctx.fill();
-        }
-      }
-     
+    }
     })
 
     canvas.addEventListener('touchend',(e) => {
