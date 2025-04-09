@@ -1,0 +1,101 @@
+
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+width: 100vw;
+height: 100vh;
+user-select: none;
+font-size: 24px;
+margin: 0;
+overscroll-behavior: none;
+}
+#container{
+overflow: hidden;
+display: flex;
+flex-direction: column;
+height: 100%;
+width: 100%;
+}
+.action{
+border: none;
+margin: 2vh;
+background-color: transparent;
+}
+#action{
+flex: 2;
+display: none;
+justify-content: center;
+align-items: center;
+flex-wrap: wrap;
+font-size: 3rem;
+}
+#canvas-container{
+flex: 8;
+border-bottom: 1px solid;
+overflow: auto;
+position: relative;
+}
+#canvas{
+flex: 8;
+display: block;
+flex-shrink: 0;
+touch-action: none;
+overflow: auto;
+}
+#brushes{
+display: none;
+flex: 2;
+justify-content: space-around;
+align-items: center;
+overflow-x: auto;
+}
+#sidebar{
+flex: 2;
+display: flex;
+justify-content: center;
+align-items: center;
+flex-wrap: wrap;
+}
+#sidebar,input[type='color'],input[type='file'],button{
+font-size: 2rem;
+}
+#fotoFilterTools{
+flex: 2;
+display: none;
+justify-content: center;
+align-items: center;
+overflow-x: auto;
+flex-wrap: wrap;
+}
+img{
+width: 5vh;
+}
+#dawnloadCanvas{
+position: absolute;
+border: 1px solid;
+bottom: 20vh;
+width: auto;
+height: auto;
+border-radius: 20px 20px 0px 0px;
+background-color: white;
+}
+.downloadForm{
+background-color: white;
+border: none;
+margin: 2vh;
+}
+@media (max-width: 500px) {
+.downloadForm{
+    font-size: small;
+}
+}
+@media(main-width: 750px){
+input[type='range']{
+
+}
+}
+#scrinIcon{
+background-color: transparent;
+}
