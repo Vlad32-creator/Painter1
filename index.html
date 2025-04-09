@@ -22,29 +22,29 @@
             </div>
 
             <label for="input" title="load photo" class="action">
-                <img src="paperclip.png" alt="load photo">
+                <img src="./Images/paperclip.png" alt="load photo">
             </label>
             <input type="file"  style="display: none; transform: translate(0,-20vh);" id="input">
             <button class="action" onclick="tools().openDownload()"  title="download">
-                <img src="download.png" alt="">
+                <img src="./Images/download.png" alt="">
             </button>
             <label class="action" title="strike color" for="brushColor">
-                <img src="palette.png" alt="">
+                <img src="./Images/palette.png" alt="">
             </label>
             <input type="color" value="#ff5733" style="display: none;" id="brushColor">
 
             <button id="actions" title="tools" onclick="tools().pen()" class="action">
-                <img src="tools.png" alt="">
+                <img src="./Images/tools.png" alt="">
             </button>
 
             <input min="2" max="40" title="line Width" type="range" id="lineWidth">
 
             <button class="action"  title="eraser" onclick="tools().eraser(event)">
-                <img src="eraser.png" alt="">
+                <img src="./Images/eraser.png" alt="">
             </button>
 
             <button class="action" title="Clear All" id="clearCanvas">
-                <img src="trash-2.png" alt="">
+                <img src="./Images/trash-2.png" alt="">
             </button>
             <input style="display: none;" type="color" id="colorFill">
         </div>
@@ -67,29 +67,29 @@
         <div id="action">
             <button class="action" title="скругление" id="lineRound" onclick="tools().lineCapRound(event)">⚪</button>
             <button class="action" id='drawChanger' onclick="tools().isDrawing()">
-                <img id="pencilOnOf" src="pencil.png" alt="">
+                <img id="pencilOnOf" src="./Images/pencil.png" alt="">
             </button>
 
             <button class="action" onclick="tools().myPen(event)">
-                <img src="fill.png" alt="">
+                <img src="./Images/fill.png" alt="">
             </button>
 
             <button class="action" title="прямая линия" id="strLine" onclick="tools().straightLine(event)">
-                <img src="line.png"   alt="">
+                <img src="./Images/line.png"   alt="">
             </button>
 
             <button class="action" onclick="tools().elusion(event)">
-                <img src="reys.png" alt="">
+                <img src="./Images/reys.png" alt="">
             </button>
             <button class="action" onclick="tools().brushes()">
-                <img src="brushes.png" alt="">
+                <img src="./Images/brushes.png" alt="">
             </button>
             <button class="action" onclick="tools().back()">
-                <img src="back.png" alt="">
+                <img src="./Images/back.png" alt="">
             </button>
            
             <button class="action"  onclick="tools().filterBar()" id="fotoFilter">
-                <img src="filterFoto.png" alt="">
+                <img src="./Images/filterFoto.png" alt="">
             </button>
 
             <button class="action" onclick="tools().exit()">&#10006;</button>
@@ -101,16 +101,16 @@
             <button title="gray" onclick="tools().filters().gray()" class="action">⚫</button>
             <button title="sepia" onclick="tools().filters().sepia()" class="action">🟡</button>
             <button title="hue-rotate" onclick="tools().filters().hueRotate()" class="action">
-                <img src="hue-rotate.png" alt="">
+                <img src="./Images/hue-rotate.png" alt="">
             </button>
             <button title="contrast" onclick="tools().filters().contrast()" class="action">
-                <img src="contrast.png" alt="">
+                <img src="./Images/contrast.png" alt="">
             </button>
             <button title="saturate" onclick="tools().filters().saturate()" class="action">
-                <img src="saturate.png" alt="">
+                <img src="./Images/saturate.png" alt="">
             </button>
             <button title="blur" onclick="tools().filters().blur()" class="action">
-                <img src="blur.png" alt="">
+                <img src="./Images/blur.png" alt="">
             </button>
             <button class="action" onclick="tools().exit()">&#10006;</button>
         </div>
@@ -322,10 +322,10 @@ function tools(){
         isDrawing: (e) => {
             drawing = !drawing ;
             if (drawing === false) {
-                pencilOnOf.src = 'pencil-off.png';
+                pencilOnOf.src = './Images/pencil-off.png';
                 
             } else {
-                pencilOnOf.src = 'pencil.png';
+                pencilOnOf.src = './Images/pencil.png';
             }
         },
         lineCapRound: (e) => {
