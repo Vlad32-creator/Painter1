@@ -40,7 +40,7 @@ No libraries, no frameworks — just learning, experimenting, and having fun.
 ## 🚀 Try It Out
 
 You can try the app right here:  
-🔗 [https://your-username.github.io/drawing-app](https://your-username.github.io/drawing-app)
+🔗 [https://vlad32-creator.github.io/Painter1/](https://vlad32-creator.github.io/Painter1/)
 
 ---
 
